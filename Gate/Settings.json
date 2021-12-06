@@ -1,0 +1,1 @@
+"SimulationSettings{\n, cloudletsCnt:100\n, cloudletLength:10000\n, cloudletPes:4\n, cloudletSize:1024\n, datacenterHostsCnt:20\n, hostPeMips:10000\n, hostBw:50000\n, hostRam:65536\n, hostSize:1000000\n, hostPeCnt:16\n, VmCount:60\n, VmRam:512\n, VmPes:4\n} VmBw:1000\n} VmSize:10000"
