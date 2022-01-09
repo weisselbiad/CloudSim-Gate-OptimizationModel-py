@@ -35,19 +35,16 @@ def main(exp_config: ExperimentConfig):
     for i in range(num_optimization_runs):
         logging_level = 1
         solution_technique = 'Metaheuristic_GA'  # Metaheuristic_NSGA3, Metaheuristic_GA
-        tensorboard = False
-        multi_processing = False
-        VmCnt = 100 # The number of available servers
         # Shape: [normalizedTardiness, normalizedTardiness, normalizedPenalties, normalizedMajorSetup]
+        hostCnt = 100 # The number of available servers
+        hostSize = 2
+        VmCnt = 300
         VmSize = 2
-        #HostSize = 2
         weighted_sum = []  # [20, 30, 30 * (100), 20]
-        #initial_problem = Problem_instance().get_problem_instance(problem)
         pop_size = exp_config.population
         num_generations = exp_config.generations
-        #results_logger = Results_writer(logging_level, solution_technique, i, local_dir)
         Optimization.NOBJ = exp_config.nojb
-        Optimization(pop_size, num_generations, solution_technique, multi_processing, weighted_sum, tensorboard, VmCnt, VmSize)
+        Optimization(pop_size, num_generations, solution_technique,  weighted_sum,  VmSize, hostSize, hostCnt, VmCnt)
         print('\n#################################### Optimization run', i, 'is finished ####################################\n')
 
 NOBJ = 4
