@@ -43,7 +43,7 @@ def main(exp_config: ExperimentConfig):
 
         VmCnt = 300
         VmSize = 2
-        gpuVmCnt=200
+        gpuVmCnt=100
         gpuVmSize =2
 
         weighted_sum = []  # [20, 30, 30 * (100), 20]
