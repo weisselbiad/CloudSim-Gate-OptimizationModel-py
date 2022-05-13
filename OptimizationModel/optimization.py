@@ -11,7 +11,7 @@ from OptimizationModel.evaluation import Evaluation
 class Optimization:
 
     NOBJ = 0
-    def __init__(self, pop_size, num_generations, solution_technique, weighted_sum, VmSize, hostSize, hostCnt, VmCnt):
+    def __init__(self, pop_size, num_generations, solution_technique, weighted_sum, VmSize,gpuVmSize, hostSize,gpuhostSize, hostCnt,gpuhostCnt, VmCnt,gpuVmCnt):
 
         gateway = JavaGateway(callback_server_parameters=CallbackServerParameters())
         
@@ -27,9 +27,13 @@ class Optimization:
         self.objective_dict = {}
 
         self.hostSize = hostSize
+        self.gpuhostSize = gpuhostSize
         self.VmCnt = VmCnt
+        self.gpuVmCnt = gpuVmCnt
         self.hostCnt = hostCnt
+        self.gpuhostCnt = gpuhostCnt
         self.VmSize = VmSize
+        self.gpuVmSize = gpuVmSize
 
 
         if len(self.weighted_sum) != 0:
@@ -40,7 +44,7 @@ class Optimization:
         self.evaluation_instance = Evaluation(self.gateway)
 
         # instead of evalFitness pass an interface to the Simulation in JAVA
-        # register on the interface that you will create a method that will invoke the java code based
+        # register on the interface that you will create a method that will invoke the java code base
 
         self.toolbox.register("evaluate", self.evaluation_instance.evalBridge)
 
@@ -51,8 +55,7 @@ class Optimization:
             self.NSGA3()
 
         else:
-            print(
-                '\n## Initialization error ## \n-Two solution techniques are available: Metaheuristic_NSGA3, and Metaheuristic_GA \n-Note: The naming is case-sensitive')
+            print('\n## Initialization error ## \n-Two solution techniques are available: Metaheuristic_NSGA3, and Metaheuristic_GA \n-Note: The naming is case-sensitive')
 
         self.run_metaheuristic_optimization()
 
@@ -63,9 +66,15 @@ class Optimization:
         # register toolboxes functions for the genetic algorithm
         #
         self.toolbox.register("VmAllocation",VmAllocation,self.VmCnt)
+        self.toolbox.register("GpuVmAllocation", GpuVmAllocation, self.gpuVmCnt)
         self.toolbox.register("HostAllocation",HostAllocation,self.VmCnt)
+        self.toolbox.register("GpuHostAllocation", GpuHostAllocation, self.gpuVmCnt)
         #function container with a generator function corresponding to the calling n times the functions
-        self.toolbox.register("individual", tools.initCycle, creator.Individual_allocation, (self.toolbox.VmAllocation,self.toolbox.HostAllocation,),n=1)
+        self.toolbox.register("individual", tools.initCycle, creator.Individual_allocation, (self.toolbox.VmAllocation,
+                                                                                             self.toolbox.HostAllocation,
+                                                                                             self.toolbox.GpuVmAllocation,
+                                                                                             self.toolbox.GpuHostAllocation
+                                                                                             ,),n=1)
         #Call the function func n times and return the results in a container type container
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
         #Executes a uniform crossover that modify in place the two sequence individuals.
@@ -112,6 +121,7 @@ class Optimization:
                     self.objective_dict[key] = [self.ExecTime, self.TotalPower, self.TotalCost,
                                                 self.tensor_fitness]
                     ind.fitness.values = self.normalized_fitness
+
 
             self.pareto_front.update(population)
 
@@ -177,12 +187,40 @@ def VmAllocation(self):
     print("vm Tuple: ",vmTuple)
     return vmTuple
 
+def GpuVmAllocation(self):
+    vmNumber = self
+    gpuvmTuple = []
+    for i in (1,2,3):
+        if i == 1 :
+            RandvmCnt = random.randrange(vmNumber)
+            newvmNumber = vmNumber - RandvmCnt
+            gpuvmTuple.append([i,RandvmCnt])
+        elif i == 2:
+            newRandvmCnt = random.randrange(newvmNumber)
+            gpuvmTuple.append([i,newRandvmCnt])
+        elif i == 3 :
+            treenewvmNumber = vmNumber - (RandvmCnt+newRandvmCnt)
+            gpuvmTuple.append([i, treenewvmNumber])
+        else: print(   "invalid vm Size"   )
+    print("Gpuvm Tuple: ",gpuvmTuple)
+    return gpuvmTuple
+
+
 #Number of hosts adaptation
 def HostAllocation(self):
     vmNumber = self
     hostTuple = []
     for i in (1, 2, 3):
-        RandHost = random.randrange(vmNumber/3, vmNumber)
+        RandHost = random.randrange(int(vmNumber/3), vmNumber)
         hostTuple.append([i,RandHost])
     print("host Tuple: ",hostTuple)
     return hostTuple
+
+def GpuHostAllocation(self):
+    gpuvmNumber = self
+    gpuhostTuple = []
+    for i in (1, 2, 3):
+        RandHost = random.randrange(int(gpuvmNumber/3), gpuvmNumber)
+        gpuhostTuple.append([i,RandHost])
+    print("Gpuhost Tuple: ",gpuhostTuple)
+    return gpuhostTuple

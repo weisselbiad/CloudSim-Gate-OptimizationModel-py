@@ -38,16 +38,22 @@ def main(exp_config: ExperimentConfig):
         # Shape: [normalizedTardiness, normalizedTardiness, normalizedPenalties, normalizedMajorSetup]
         hostCnt = 100 # The number of available servers
         hostSize = 2
+        gpuhostCnt = 100
+        gpuhostSize= 2
+
         VmCnt = 300
         VmSize = 2
+        gpuVmCnt=200
+        gpuVmSize =2
+
         weighted_sum = []  # [20, 30, 30 * (100), 20]
         pop_size = exp_config.population
         num_generations = exp_config.generations
         Optimization.NOBJ = exp_config.nojb
-        Optimization(pop_size, num_generations, solution_technique,  weighted_sum,  VmSize, hostSize, hostCnt, VmCnt)
+        Optimization(pop_size, num_generations, solution_technique,  weighted_sum,  VmSize, gpuVmSize, hostSize ,gpuhostSize, hostCnt, gpuhostCnt, VmCnt ,gpuVmCnt)
         print('\n#################################### Optimization run', i, 'is finished ####################################\n')
 
-NOBJ = 4
+NOBJ = 2
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,) * NOBJ)
 creator.create("Individual_allocation", list, fitness=creator.FitnessMin)
 

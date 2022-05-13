@@ -38,6 +38,8 @@ class Evaluation():
       # split the results to VM and Hosts Parameters
        vmTuple = results[0]
        hostTuple = results[1]
+       gpuvmTuple = results[2]
+       gpuhostTuple = results[3]
 
       # prepare a json file
        def writeAjson(file, data):
@@ -45,8 +47,10 @@ class Evaluation():
                json.dump(data, fp)
 
        dict ={
-           "Vm" : vmTuple,
-           "Host" : hostTuple
+        "Vm" : vmTuple,
+        "Host" : hostTuple,
+        "GpuVm" : gpuvmTuple,
+        "GpuHost" : gpuhostTuple
        }
        file = 'resultes.json'
 
@@ -69,7 +73,7 @@ class Evaluation():
        TotalCost = S.getVmCost()[-2]
 
 
-       print ("Solutions: >>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<< \n"
+       print ("Solutions: >>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n"
               ,"     Virtual Machines              Physical Machines\n "
               ,"Size: ",vmTuple[0][0],"                          Size: ",hostTuple[0][0],"\n"
               ,"Number of Vms: ", vmTuple[0][1], "                Number of Hosts: ", hostTuple[0][1], "\n"
@@ -77,6 +81,14 @@ class Evaluation():
               ,"Number of Vms: ", vmTuple[1][1], "                Number of Hosts: ", hostTuple[1][1], "\n"
               , "Size: ", vmTuple[2][0], "                           Size: ", hostTuple[2][0], "\n"
               ,"Number of Vms: ", vmTuple[2][1], "               Number of Hosts: ", hostTuple[2][1], "\n"
+
+              , "    GPU Virtual Machines             GPU Physical Machines\n "
+              , "Size: ", gpuvmTuple[0][0], "                          Size: ", gpuhostTuple[0][0], "\n"
+              , "Number of Vms: ", gpuvmTuple[0][1], "                Number of Hosts: ", gpuhostTuple[0][1], "\n"
+              , "Size: ", gpuvmTuple[1][0], "                          Size: ", gpuhostTuple[1][0], "\n"
+              , "Number of Vms: ", gpuvmTuple[1][1], "                Number of Hosts: ", gpuhostTuple[1][1], "\n"
+              , "Size: ", gpuvmTuple[2][0], "                           Size: ", gpuhostTuple[2][0], "\n"
+              , "Number of Vms: ", gpuvmTuple[2][1], "               Number of Hosts: ", gpuhostTuple[2][1], "\n"
 
               )
        print("ExecTime: ", ExecTime," ms || ", "TotalPower: ", TotalPower," watts || ", "TotalCost: ",TotalCost," $ \n")
