@@ -67,22 +67,27 @@ class Optimization:
         #
         self.toolbox.register("VmAllocation",VmAllocation,self.VmCnt)
         self.toolbox.register("GpuVmAllocation", GpuVmAllocation, self.gpuVmCnt)
-        self.toolbox.register("HostAllocation",HostAllocation,self.VmCnt)
-        self.toolbox.register("GpuHostAllocation", GpuHostAllocation, self.gpuVmCnt)
+        self.toolbox.register("HostAllocation",HostAllocation,self.hostCnt)
+        self.toolbox.register("GpuHostAllocation", GpuHostAllocation, self.gpuhostCnt)
         #function container with a generator function corresponding to the calling n times the functions
         self.toolbox.register("individual", tools.initCycle, creator.Individual_allocation, (self.toolbox.VmAllocation,
                                                                                              self.toolbox.HostAllocation,
                                                                                              self.toolbox.GpuVmAllocation,
-                                                                                             self.toolbox.GpuHostAllocation
-                                                                                             ,),n=1)
+                                                                                             self.toolbox.GpuHostAllocation,
+                                                                                             ),n=1)
         #Call the function func n times and return the results in a container type container
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
+
         #Executes a uniform crossover that modify in place the two sequence individuals.
         #The attributes are swapped according to the indpb probability.
-        self.toolbox.register("mate", tools.cxUniform, indpb=0.7)
+        #self.toolbox.register("mate", tools.cxUniform, indpb=0.7)
+        self.toolbox.register("mate", tools.cxTwoPoint )
+
         #Shuffle the attributes of the input individual and return the mutant
-        self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.2)
+        #self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.2)
+        self.toolbox.register("mutate", tools.mutFlipBit, indpb=0.2)
         self.toolbox.register("select", tools.selTournament, tournsize=10)
+        #self.toolbox.register("select", tools.selBest,individuals=4, k=2, fit_attr="fitness")
 
     def run_metaheuristic_optimization(self):
 
