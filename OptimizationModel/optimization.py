@@ -80,12 +80,12 @@ class Optimization:
 
         #Executes a uniform crossover that modify in place the two sequence individuals.
         #The attributes are swapped according to the indpb probability.
-        #self.toolbox.register("mate", tools.cxUniform, indpb=0.7)
-        self.toolbox.register("mate", tools.cxTwoPoint )
+        self.toolbox.register("mate", tools.cxUniform, indpb=0.7)
+        #self.toolbox.register("mate", tools.cxTwoPoint )
 
         #Shuffle the attributes of the input individual and return the mutant
-        #self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.2)
-        self.toolbox.register("mutate", tools.mutFlipBit, indpb=0.2)
+        self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.2)
+        #self.toolbox.register("mutate", tools.mutFlipBit, indpb=0.2)
         self.toolbox.register("select", tools.selTournament, tournsize=10)
         #self.toolbox.register("select", tools.selBest,individuals=4, k=2, fit_attr="fitness")
 

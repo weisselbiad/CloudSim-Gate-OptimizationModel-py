@@ -41,10 +41,10 @@ def main(exp_config: ExperimentConfig):
         gpuhostCnt = 4
         gpuhostSize = 2
 
-        VmCnt = 10
+        VmCnt = 12
         VmSize = 2
         gpuVmCnt = 10
-        gpuVmSize = 1
+        gpuVmSize = 2
 
 
         weighted_sum = []  # [20, 30, 30 * (100), 20]
