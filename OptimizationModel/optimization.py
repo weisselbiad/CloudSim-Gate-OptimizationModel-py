@@ -216,7 +216,7 @@ def HostAllocation(self):
     vmNumber = self
     hostTuple = []
     for i in (1, 2, 3):
-        RandHost = random.randrange(int(vmNumber/3), vmNumber)
+        RandHost = random.randrange(int(vmNumber/2), vmNumber)
         hostTuple.append([i,RandHost])
     print("host Tuple: ",hostTuple)
     return hostTuple
@@ -225,7 +225,7 @@ def GpuHostAllocation(self):
     gpuvmNumber = self
     gpuhostTuple = []
     for i in (1, 2, 3):
-        RandHost = random.randrange(int(gpuvmNumber/3), gpuvmNumber)
+        RandHost = random.randrange(int(gpuvmNumber/2), gpuvmNumber)
         gpuhostTuple.append([i,RandHost])
     print("Gpuhost Tuple: ",gpuhostTuple)
     return gpuhostTuple

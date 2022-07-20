@@ -95,3 +95,4 @@ class Evaluation():
 
        return ExecTime, TotalPower, TotalCost
 
+####   this.sourceVm = CPUfirstvmList.stream().findFirst().filter(vm ->vm.getCloudletScheduler().getCloudletList().stream().allMatch(cloudlet -> cloudlet.isFinished())).get();###CPUfirstvmList.remove(CPUfirstvmList.stream().filter(vm -> vm.getId()==this.sourceVm.getId()));
