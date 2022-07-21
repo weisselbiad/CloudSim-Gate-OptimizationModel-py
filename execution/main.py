@@ -36,14 +36,14 @@ def main(exp_config: ExperimentConfig):
         logging_level = 1
         solution_technique = 'Metaheuristic_GA'  # Metaheuristic_NSGA3, Metaheuristic_GA
         # Shape: [normalizedTardiness, normalizedTardiness, normalizedPenalties, normalizedMajorSetup]
-        hostCnt = 5 # The number of available servers
+        hostCnt = 3 # The number of available servers
         hostSize = 2
-        gpuhostCnt = 5
+        gpuhostCnt = 3
         gpuhostSize = 2
 
-        VmCnt = 10
+        VmCnt = 5
         VmSize = 2
-        gpuVmCnt = 10
+        gpuVmCnt = 3
         gpuVmSize = 1
 
 
