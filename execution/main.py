@@ -1,6 +1,7 @@
 
 
 import argparse
+import random
 from typing import NamedTuple, Union
 from OptimizationModel.optimization import Optimization
 
@@ -31,27 +32,35 @@ def main(exp_config: ExperimentConfig):
         local_dir.mkdir(parents=True)
     else:
         local_dir = exp_config.results_dir
+    def generateSetup():
+        r = 200
+        M = []
+        for i in range(r):
+            P = []
+            for j in range(1):
+                Size = random.randint(1, 3)
+                Seq = random.randint(1, 6)
+                allocationpolicy = random.randint(1, 3)
+                P.append(Size)
+                P.append(Seq)
+                P.append(allocationpolicy)
+            M.append(P)
+        return M
+
+
 
     for i in range(num_optimization_runs):
         logging_level = 1
         solution_technique = 'Metaheuristic_GA'  # Metaheuristic_NSGA3, Metaheuristic_GA
         # Shape: [normalizedTardiness, normalizedTardiness, normalizedPenalties, normalizedMajorSetup]
-        hostCnt = 3 # The number of available servers
-        hostSize = 2
-        gpuhostCnt = 2
-        gpuhostSize = 2
-
-        VmCnt = 4
-        VmSize = 2
-        gpuVmCnt = 4
-        gpuVmSize = 1
+        initSetup = generateSetup()
 
 
         weighted_sum = []  # [20, 30, 30 * (100), 20]
         pop_size = exp_config.population
         num_generations = exp_config.generations
         Optimization.NOBJ = exp_config.nojb
-        Optimization(pop_size, num_generations, solution_technique,  weighted_sum,  VmSize, gpuVmSize, hostSize ,gpuhostSize, hostCnt, gpuhostCnt, VmCnt ,gpuVmCnt)
+        Optimization(pop_size, num_generations, solution_technique,  weighted_sum,  initSetup)
         print('\n#################################### Optimization run', i, 'is finished ####################################\n')
 
 NOBJ = 2

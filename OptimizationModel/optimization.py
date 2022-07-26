@@ -11,7 +11,7 @@ from OptimizationModel.evaluation import Evaluation
 class Optimization:
 
     NOBJ = 0
-    def __init__(self, pop_size, num_generations, solution_technique, weighted_sum, VmSize,gpuVmSize, hostSize,gpuhostSize, hostCnt,gpuhostCnt, VmCnt,gpuVmCnt):
+    def __init__(self, pop_size, num_generations, solution_technique, weighted_sum, initSetup):
 
         gateway = JavaGateway(callback_server_parameters=CallbackServerParameters())
         
@@ -26,14 +26,7 @@ class Optimization:
         self.pareto_dict = {}
         self.objective_dict = {}
 
-        self.hostSize = hostSize
-        self.gpuhostSize = gpuhostSize
-        self.VmCnt = VmCnt
-        self.gpuVmCnt = gpuVmCnt
-        self.hostCnt = hostCnt
-        self.gpuhostCnt = gpuhostCnt
-        self.VmSize = VmSize
-        self.gpuVmSize = gpuVmSize
+        self.initSetup = initSetup
 
 
         if len(self.weighted_sum) != 0:
@@ -65,16 +58,11 @@ class Optimization:
 
         # register toolboxes functions for the genetic algorithm
         #
-        self.toolbox.register("VmAllocation",VmAllocation,self.VmCnt)
-        self.toolbox.register("GpuVmAllocation", GpuVmAllocation, self.gpuVmCnt)
-        self.toolbox.register("HostAllocation",HostAllocation,self.hostCnt)
-        self.toolbox.register("GpuHostAllocation", GpuHostAllocation, self.gpuhostCnt)
+        self.toolbox.register("Matrix",SuffleM,self.initSetup)
+
         #function container with a generator function corresponding to the calling n times the functions
-        self.toolbox.register("individual", tools.initCycle, creator.Individual_allocation, (self.toolbox.VmAllocation,
-                                                                                             self.toolbox.HostAllocation,
-                                                                                             self.toolbox.GpuVmAllocation,
-                                                                                             self.toolbox.GpuHostAllocation,
-                                                                                             ),n=1)
+        self.toolbox.register("individual", tools.initCycle, creator.Individual_allocation, (self.toolbox.Matrix
+                                                                                                          ),n=1)
         #Call the function func n times and return the results in a container type container
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
 
@@ -172,7 +160,9 @@ class Optimization:
             fitness = (normalizedPower, normalizedExecTime)
 
         return fitness
-
+def SuffleM(M):
+    shuffled = random.sample(M, len(M))
+    return shuffled
 #Number of vm adaptation
 def VmAllocation(self):
     vmNumber = self
