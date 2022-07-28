@@ -65,6 +65,7 @@ class Evaluation():
        ExecTime = S.getVmCost()[-1]
        TotalPower = S.getPowerConsumption()
        TotalCost = S.getVmCost()[-2]
+       NumberofSLAviolations= S.getNumofSLAviolation()
 
        print("Solutions: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n")
        for i in range(results):
@@ -74,8 +75,8 @@ class Evaluation():
               ,"Sequence: ", results[i][1], "\n"
               , "Allocation Policy: ", results[i][2],"\n"
               )
-       print("ExecTime: ", ExecTime," ms || ", "TotalPower: ", TotalPower," watts || ", "TotalCost: ",TotalCost," $ \n")
+       print("ExecTime: ", ExecTime," ms || ", "TotalPower: ", TotalPower," watts || ", "TotalCost: ",TotalCost," $ || ","NumberofSLAviolations: ",NumberofSLAviolations," \n")
 
-       return ExecTime, TotalPower, TotalCost
+       return ExecTime, TotalPower, TotalCost, NumberofSLAviolations
 
 ####   this.sourceVm = CPUfirstvmList.stream().findFirst().filter(vm ->vm.getCloudletScheduler().getCloudletList().stream().allMatch(cloudlet -> cloudlet.isFinished())).get();###CPUfirstvmList.remove(CPUfirstvmList.stream().filter(vm -> vm.getId()==this.sourceVm.getId()));

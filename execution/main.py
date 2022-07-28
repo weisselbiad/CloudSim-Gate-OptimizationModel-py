@@ -48,7 +48,6 @@ def main(exp_config: ExperimentConfig):
         return M
 
 
-
     for i in range(num_optimization_runs):
         logging_level = 1
         solution_technique = 'Metaheuristic_GA'  # Metaheuristic_NSGA3, Metaheuristic_GA

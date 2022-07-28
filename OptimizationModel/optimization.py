@@ -101,17 +101,18 @@ class Optimization:
                 self.ExecTime = fit[0]
                 self.TotalPower = fit[1]
                 self.TotalCost = fit[2]
+                self.NumberofSLAviolations =fit[3]
 
                 self.normalized_fitness = self.normalize_results_minMax(fit)
 
                 if len(self.weighted_sum) != 0:
                     self.tensor_fitness = self.normalized_fitness
-                    self.objective_dict[key] = [self.ExecTime, self.TotalPower, self.TotalCost,
+                    self.objective_dict[key] = [self.ExecTime, self.TotalPower, self.TotalCost,self.NumberofSLAviolations,
                                                 self.tensor_fitness]
                     ind.fitness.values = self.normalized_fitness,
                 else:
                     self.tensor_fitness = sum(self.normalized_fitness) * 10
-                    self.objective_dict[key] = [self.ExecTime, self.TotalPower, self.TotalCost,
+                    self.objective_dict[key] = [self.ExecTime, self.TotalPower, self.TotalCost,self.NumberofSLAviolations,
                                                 self.tensor_fitness]
                     ind.fitness.values = self.normalized_fitness
 
