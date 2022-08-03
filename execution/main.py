@@ -64,7 +64,9 @@ def main(exp_config: ExperimentConfig):
 
 NOBJ = 2
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,) * NOBJ)
-creator.create("Individual_allocation", list, fitness=creator.FitnessMin)
+creator.create("Individual_vm_size", list, fitness=creator.FitnessMin, Individual_exec_sequence=None, Individual_allocation_policy=None)
+creator.create("Individual_exec_sequence", list, fitness=creator.FitnessMin)
+creator.create("Individual_allocation_policy", list, fitness=creator.FitnessMin)
 
 if __name__ == '__main__':
 

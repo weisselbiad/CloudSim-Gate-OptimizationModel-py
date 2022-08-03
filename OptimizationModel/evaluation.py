@@ -34,11 +34,31 @@ class Evaluation():
      self.gateway = gateway
 
     # function defined as an interface to the Simulation
-    def evalBridge(self,  results):
+    def evalBridge(self,  vm_size_individual: tuple):
+
+        # TODO: Finish this method to send the solution individual suggested by the optimization to the simulation model
+        """
+        Here how you will pase every individual and split them into vm_size_individual, exec_sequence_individual,
+        allocation_policy_individual before sending it to the simulation side
+
+        :param vm_size_individual:
+        :return:
+
+        vm_size_individual = list(vm_size_individual)
+        exec_sequence_individual = list(vm_size_individual.Individual_exec_sequence)
+        allocation_policy_individual = list(vm_size_individual.Individual_allocation_policy)
+
+        You integration down seemn to be wrong, you have to pass the solution individuals in the previous shape
+
+        """
+
+
       # split the results to VM and Hosts Parameters
 
 
       # prepare a json file
+
+       # TODO: Repair this method to pass the solutions
        def writeAjson(file, data):
            with open(file, 'w') as fp:
                json.dump(data, fp)
