@@ -1,3 +1,14 @@
+# TODO: Finish this method to send the solution individual suggested by the optimization to the simulation model
+"""
+Here how you will pase every individual and split them into vm_size_individual, exec_sequence_individual,
+allocation_policy_individual before sending it to the simulation side
+:param vm_size_individual:
+:return:
+vm_size_individual = list(vm_size_individual)
+exec_sequence_individual = list(vm_size_individual.Individual_exec_sequence)
+allocation_policy_individual = list(vm_size_individual.Individual_allocation_policy)
+You integration down seemn to be wrong, you have to pass the solution individuals in the previous shape
+"""
 import timeit
 from py4j.java_gateway import JavaGateway, CallbackServerParameters
 import json
@@ -36,29 +47,19 @@ class Evaluation():
     # function defined as an interface to the Simulation
     def evalBridge(self,  vm_size_individual: tuple):
 
-        # TODO: Finish this method to send the solution individual suggested by the optimization to the simulation model
-        """
-        Here how you will pase every individual and split them into vm_size_individual, exec_sequence_individual,
-        allocation_policy_individual before sending it to the simulation side
-
-        :param vm_size_individual:
-        :return:
-
-        vm_size_individual = list(vm_size_individual)
-        exec_sequence_individual = list(vm_size_individual.Individual_exec_sequence)
-        allocation_policy_individual = list(vm_size_individual.Individual_allocation_policy)
-
-        You integration down seemn to be wrong, you have to pass the solution individuals in the previous shape
-
-        """
 
 
       # split the results to VM and Hosts Parameters
 
+       vm_size_individual = vm_size_individual
+       exec_sequence_individual = vm_size_individual.Individual_exec_sequence
+       allocation_policy_individual = vm_size_individual.Individual_allocation_policy
 
-      # prepare a json file
+       results = []
+       for i in range(len(vm_size_individual)):
+        results.append([vm_size_individual[i],exec_sequence_individual[i],allocation_policy_individual[i]])
 
-       # TODO: Repair this method to pass the solutions
+        print(results)
        def writeAjson(file, data):
            with open(file, 'w') as fp:
                json.dump(data, fp)
@@ -98,5 +99,3 @@ class Evaluation():
        print("ExecTime: ", ExecTime," ms || ", "TotalPower: ", TotalPower," watts || ", "TotalCost: ",TotalCost," $ || ","NumberofSLAviolations: ",NumberofSLAviolations," \n")
 
        return ExecTime, TotalPower, TotalCost, NumberofSLAviolations
-
-####   this.sourceVm = CPUfirstvmList.stream().findFirst().filter(vm ->vm.getCloudletScheduler().getCloudletList().stream().allMatch(cloudlet -> cloudlet.isFinished())).get();###CPUfirstvmList.remove(CPUfirstvmList.stream().filter(vm -> vm.getId()==this.sourceVm.getId()));

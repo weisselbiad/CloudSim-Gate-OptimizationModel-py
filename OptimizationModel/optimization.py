@@ -53,7 +53,7 @@ class Optimization:
 
     def genetic_algorithms(self):
 
-        number_jobs = 200
+        number_jobs = 1
         random.seed(time.process_time())
 
         # register toolboxes functions for the genetic algorithm
@@ -85,14 +85,14 @@ class Optimization:
         # Shuffle the attributes of the input individual and return the mutant
         self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.2)
         # self.toolbox.register("mutate", tools.mutFlipBit, indpb=0.2)
-        self.toolbox.register("select", tools.selTournament, tournsize=10)
+        self.toolbox.register("select", tools.selTournament, tournsize=1)
         # self.toolbox.register("select", tools.selBest,individuals=4, k=2, fit_attr="fitness")
 
 
     def NSGA(self):
 
         P = 3
-        number_jobs = 200
+        number_jobs = 10
         random.seed(time.process_time())
 
         # register toolboxes functions for the genetic algorithm
@@ -148,9 +148,9 @@ class Optimization:
 
         self.start = timeit.default_timer()
 
-        vm_size_population = self.toolbox.population(n=self.pop_size)
-        exec_sequence_population = self.toolbox.population(n=self.pop_size)
-        allocation_policy_population = self.toolbox.population(n=self.pop_size)
+        vm_size_population = self.toolbox.vm_size_population(n=self.pop_size)
+        exec_sequence_population = self.toolbox.exec_sequence_population(n=self.pop_size)
+        allocation_policy_population = self.toolbox.allocation_policy_population(n=self.pop_size)
 
         for gen in range(self.num_generations):
 
@@ -169,7 +169,7 @@ class Optimization:
                                                                 cxpb=self.cxpb,
                                                                 mutpb=self.mutpb)
             """
-                Here we are mergeing the individuals and passing them at attribute to the main population
+                Here we are merging the individuals and passing them at attribute to the main population
             """
 
             for vm_size_individual, exec_sequence_individual, allocation_policy_individual in zip(vm_size_offspring,
@@ -185,7 +185,7 @@ class Optimization:
             for fit, ind_vm_size, ind_sequence, ind_allocation_policy in zip(fits, vm_size_offspring,
                                                                                               exec_sequence_offspring,
                                                                                               allocation_policy_offspring):
-                individual_index = offspring.index(ind)
+                individual_index = vm_size_offspring.index(ind_vm_size)
                 key = individual_index + (gen * self.pop_size)
                 # ExecTime: when the last cloudlet finish execution
                 self.ExecTime = fit[0]
