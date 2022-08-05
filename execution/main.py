@@ -85,12 +85,12 @@ if __name__ == '__main__':
                         help='Number of generations.',
                         required=False,
                         type=int,
-                        default=10)
+                        default=8)
     parser.add_argument('-p', '--population',
                         help='Population size.',
                         required=False,
                         type=int,
-                        default=1)
+                        default=10)
 
     config_parsed = parser.parse_args()
     out_path = None

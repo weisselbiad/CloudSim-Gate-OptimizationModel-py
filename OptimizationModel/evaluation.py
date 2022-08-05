@@ -89,7 +89,7 @@ class Evaluation():
        NumberofSLAviolations= S.getNumofSLAviolation()
 
        print("Solutions: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n")
-       for i in range(results):
+       for i in range(len(results)):
         print (" \n"
               ,"     Virtual Machine  ",i,"    \n "
               ,"Size: ",results[i][0],"\n"
