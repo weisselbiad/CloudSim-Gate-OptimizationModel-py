@@ -10,9 +10,7 @@ from OptimizationModel.evaluation import Evaluation
 class Optimization:
     NOBJ = 0
 
-    def __init__(self, pop_size, num_generations, solution_technique, weighted_sum, initSetup):
-
-        gateway = JavaGateway(callback_server_parameters=CallbackServerParameters())
+    def __init__(self, pop_size, num_generations, solution_technique, weighted_sum, gateway):
 
         self.gateway = gateway
         self.weighted_sum = weighted_sum
@@ -25,7 +23,7 @@ class Optimization:
         self.pareto_dict = {}
         self.objective_dict = {}
 
-        self.initSetup = initSetup
+        #self.initSetup = initSetup
 
         if len(self.weighted_sum) != 0:
             self.pareto_front = tools.HallOfFame(30)
@@ -53,7 +51,7 @@ class Optimization:
 
     def genetic_algorithms(self):
 
-        number_jobs =1
+        number_jobs = 2
         random.seed(time.process_time())
 
         # register toolboxes functions for the genetic algorithm

@@ -3,6 +3,9 @@
 import argparse
 import random
 from typing import NamedTuple, Union
+
+from py4j.java_gateway import JavaGateway, CallbackServerParameters
+
 from OptimizationModel.optimization import Optimization
 
 from execution.results_writer import Results_writer
@@ -23,15 +26,15 @@ class ExperimentConfig(NamedTuple):
 
 def main(exp_config: ExperimentConfig):
 
-    num_optimization_runs = 1
+    num_optimization_runs =3
     problem = '1'
-    if exp_config.results_dir is None:
-        local_dir = os.getcwd()
-        local_dir = Path(local_dir).joinpath('results_csv').joinpath(
-            problem + '_problem_' + datetime.now().strftime("%b_%d_%Y_%H-%M-%S"))
-        local_dir.mkdir(parents=True)
-    else:
-        local_dir = exp_config.results_dir
+    # if exp_config.results_dir is None:
+    #     local_dir = os.getcwd()
+    #     local_dir = Path(local_dir).joinpath('results_csv').joinpath(
+    #         problem + '_problem_' + datetime.now().strftime("%b_%d_%Y_%H-%M-%S"))
+    #     local_dir.mkdir(parents=True)
+    # else:
+    #     local_dir = exp_config.results_dir
     def generateSetup():
         r = 200
         M = []
@@ -47,19 +50,19 @@ def main(exp_config: ExperimentConfig):
             M.append(P)
         return M
 
-
+    gateway = JavaGateway(callback_server_parameters=CallbackServerParameters(daemonize=True,
+                                                                              daemonize_connections=True))
     for i in range(num_optimization_runs):
         logging_level = 1
         solution_technique = 'Metaheuristic_GA'  # Metaheuristic_NSGA3, Metaheuristic_GA
         # Shape: [normalizedTardiness, normalizedTardiness, normalizedPenalties, normalizedMajorSetup]
         initSetup = generateSetup()
 
-
         weighted_sum = []  # [20, 30, 30 * (100), 20]
         pop_size = exp_config.population
         num_generations = exp_config.generations
         Optimization.NOBJ = exp_config.nojb
-        Optimization(pop_size, num_generations, solution_technique,  weighted_sum,  initSetup)
+        Optimization(pop_size, num_generations, solution_technique, weighted_sum, gateway=gateway)
         print('\n#################################### Optimization run', i, 'is finished ####################################\n')
 
 NOBJ = 2
@@ -85,7 +88,7 @@ if __name__ == '__main__':
                         help='Number of generations.',
                         required=False,
                         type=int,
-                        default=8)
+                        default=10)
     parser.add_argument('-p', '--population',
                         help='Population size.',
                         required=False,
