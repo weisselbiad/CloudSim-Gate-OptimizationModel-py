@@ -4,7 +4,7 @@ import argparse
 import random
 from typing import NamedTuple, Union
 
-from py4j.java_gateway import JavaGateway, CallbackServerParameters
+from py4j.java_gateway import JavaGateway, CallbackServerParameters, GatewayParameters
 
 from OptimizationModel.optimization import Optimization
 
@@ -26,7 +26,7 @@ class ExperimentConfig(NamedTuple):
 
 def main(exp_config: ExperimentConfig):
 
-    num_optimization_runs =3
+    num_optimization_runs = 3
     problem = '1'
     # if exp_config.results_dir is None:
     #     local_dir = os.getcwd()
@@ -51,7 +51,11 @@ def main(exp_config: ExperimentConfig):
         return M
 
     gateway = JavaGateway(callback_server_parameters=CallbackServerParameters(daemonize=True,
-                                                                              daemonize_connections=True))
+                                                                              daemonize_connections=True,
+                                                                              accept_timeout=160,
+                                                                              propagate_java_exceptions=True),
+                          gateway_parameters=GatewayParameters(auto_close=True))
+    gateway.restart_callback_server()
     for i in range(num_optimization_runs):
         logging_level = 1
         solution_technique = 'Metaheuristic_GA'  # Metaheuristic_NSGA3, Metaheuristic_GA

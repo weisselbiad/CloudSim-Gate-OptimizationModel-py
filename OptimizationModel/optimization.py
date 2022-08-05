@@ -51,7 +51,7 @@ class Optimization:
 
     def genetic_algorithms(self):
 
-        number_jobs = 2
+        number_jobs = 30
         random.seed(time.process_time())
 
         # register toolboxes functions for the genetic algorithm
