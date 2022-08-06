@@ -1,5 +1,3 @@
-
-
 import argparse
 import random
 from typing import NamedTuple, Union
@@ -92,7 +90,7 @@ if __name__ == '__main__':
                         help='Number of generations.',
                         required=False,
                         type=int,
-                        default=10)
+                        default=3)
     parser.add_argument('-p', '--population',
                         help='Population size.',
                         required=False,

@@ -51,7 +51,7 @@ class Optimization:
 
     def genetic_algorithms(self):
 
-        number_jobs = 30
+        number_jobs = 200
         random.seed(time.process_time())
 
         # register toolboxes functions for the genetic algorithm
@@ -134,13 +134,10 @@ class Optimization:
                        Individual_allocation_policy=None)
         creator.create("Individual_exec_sequence", list, fitness=creator.FitnessMin)
         creator.create("Individual_allocation_policy", list, fitness=creator.FitnessMin)
-
         which replace these random values
-
         Size = random.randint(1, 3)
         Seq = random.randint(1, 6)
         allocationpolicy = random.randint(1, 3)
-
         """
 
 

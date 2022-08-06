@@ -59,7 +59,7 @@ class Evaluation():
        for i in range(len(vm_size_individual)):
         results.append([vm_size_individual[i],exec_sequence_individual[i],allocation_policy_individual[i]])
 
-        print(results)
+       print(results)
        def writeAjson(file, data):
            with open(file, 'w') as fp:
                json.dump(data, fp)
