@@ -10,9 +10,10 @@ from OptimizationModel.evaluation import Evaluation
 class Optimization:
     NOBJ = 0
 
-    def __init__(self, pop_size, num_generations, solution_technique, weighted_sum, gateway):
+    def __init__(self, pop_size, num_generations, solution_technique, weighted_sum, gateway,Jobset):
 
         self.gateway = gateway
+        self.Jobset = Jobset
         self.weighted_sum = weighted_sum
         self.pop_size = pop_size
         self.num_generations = num_generations
@@ -30,7 +31,7 @@ class Optimization:
         else:
             self.pareto_front = tools.ParetoFront()
         # instantiate Evaluation Class
-        self.evaluation_instance = Evaluation(self.gateway)
+        self.evaluation_instance = Evaluation(self.gateway,self.Jobset)
 
         # instead of evalFitness pass an interface to the Simulation in JAVA
         # register on the interface that you will create a method that will invoke the java code base

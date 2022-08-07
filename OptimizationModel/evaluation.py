@@ -19,7 +19,6 @@ class Listener (object):
     def __init__(self, gateway):
      self.gateway = gateway
      self.FilePath = ''
-
     def setFilePath(self, obj):
         self.FilePath = obj
 
@@ -41,10 +40,12 @@ class Listener (object):
 
 
 class Evaluation():
-    def __init__(self, gateway):
-     self.gateway = gateway
-
-    # function defined as an interface to the Simulation
+    def __init__(self, *args):
+     self.gateway = args[0]
+     self.Jobset =args[1]
+    def getJobdet(self):
+        return self.Jobset
+        # function defined as an interface to the Simulation
     def evalBridge(self,  vm_size_individual: tuple):
 
 
@@ -65,7 +66,7 @@ class Evaluation():
                json.dump(data, fp)
 
        dict ={
-        "Results" : results
+        "Indiv" : results
        }
        file = 'resultes.json'
 
@@ -78,7 +79,7 @@ class Evaluation():
        listener.setFilePath(os.path.abspath(file))
        ListenerJava.notifyFilePath(listener)
 
-       ListenerJava.Init()
+       ListenerJava.Init(Evaluation.getJobdet(self))
        # run simulation
        S = self.gateway.entry_point.getsimulation()
        S.runSim()
