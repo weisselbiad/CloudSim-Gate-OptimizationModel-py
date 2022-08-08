@@ -54,7 +54,7 @@ def main(exp_config: ExperimentConfig):
                                                                               propagate_java_exceptions=True),
                           gateway_parameters=GatewayParameters(auto_close=True))
     gateway.restart_callback_server()
-    Jobset = gateway.entry_point.getJobsSet()
+    #Jobset = gateway.entry_point.getJobsSet()
     for i in range(num_optimization_runs):
         logging_level = 1
         solution_technique = 'Metaheuristic_GA'  # Metaheuristic_NSGA3, Metaheuristic_GA
@@ -65,7 +65,7 @@ def main(exp_config: ExperimentConfig):
         pop_size = exp_config.population
         num_generations = exp_config.generations
         Optimization.NOBJ = exp_config.nojb
-        Optimization(pop_size, num_generations, solution_technique, weighted_sum, gateway=gateway,Jobset=Jobset)
+        Optimization(pop_size, num_generations, solution_technique, weighted_sum, gateway=gateway)
         print('\n#################################### Optimization run', i, 'is finished ####################################\n')
 
 NOBJ = 2

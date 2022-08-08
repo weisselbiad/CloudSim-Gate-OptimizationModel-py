@@ -40,14 +40,14 @@ class Listener (object):
 
 
 class Evaluation():
-    def __init__(self, *args):
-     self.gateway = args[0]
-     self.Jobset =args[1]
-    def getJobdet(self):
-        return self.Jobset
-        # function defined as an interface to the Simulation
-    def evalBridge(self,  vm_size_individual: tuple):
+    def __init__(self, gateway):
+     self.gateway = gateway
 
+    #def getJobdet(self):
+    #   return self.Jobset
+    # function defined as an interface to the Simulation
+
+    def evalBridge(self,  vm_size_individual: tuple):
 
 
       # split the results to VM and Hosts Parameters
@@ -75,11 +75,12 @@ class Evaluation():
        # run methodes using the gateway to CloudSimPlus
        listener = Listener(self.gateway)
        ListenerJava = self.gateway.entry_point.getListenerApp()
+       self.gateway.entry_point.setJobsSet()
 
        listener.setFilePath(os.path.abspath(file))
        ListenerJava.notifyFilePath(listener)
 
-       ListenerJava.Init(Evaluation.getJobdet(self))
+       ListenerJava.Init()
        # run simulation
        S = self.gateway.entry_point.getsimulation()
        S.runSim()
