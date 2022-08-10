@@ -80,9 +80,9 @@ class Evaluation():
        listener.setFilePath(os.path.abspath(file))
        ListenerJava.notifyFilePath(listener)
 
-       ListenerJava.Init()
+       S=ListenerJava.Init()
        # run simulation
-       S = self.gateway.entry_point.getsimulation()
+       #S = self.gateway.entry_point.getsimulation()
        S.runSim()
        #get and print results
        ExecTime = S.getVmCost()[-1]
